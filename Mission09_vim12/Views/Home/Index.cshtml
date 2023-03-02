@@ -1,0 +1,32 @@
+﻿<!--Author: Vanessa Machado
+    This program will show 10 books per page and dynamically create pages as more books are potentially added. Uses repositories-->
+@{
+    ViewData["Title"] = "Bookstore Galore";
+}
+@model BooksViewModel
+<h1>Bookstore</h1>
+<!--Pull data from database to display on page-->
+
+@foreach(Book b in Model.Books)
+            {
+<div class="card card-outline-primary m-1 p-1">
+    <div class="bg-faded p-1">
+    <h4>@b.Title
+        <span class="badge bg-primary rounded-pill" style="float:right">
+            <small>Price: @b.Price.ToString("c")</small>
+            </span>
+        </h4>
+    </div>
+    <div class="card-text p-1"><ul>
+        <li>Author: @b.Author</li>
+        <li>Publisher: @b.Publisher</li>
+        <li>ISBN: @b.Isbn</li>
+        <li>Classification: @b.Classification</li>
+        <li>Category: @b.Category</li>
+        <li>Number of Pages: @b.PageCount</li>
+    </ul>
+    <br /></div>
+</div>
+            }
+
+<div page-blah="@Model.PageInfo" page-action="Index" page-classes-enabled="true" page-class="btn" page-class-normal="btn-outline-dark" page-class-selected="btn-primary" class="btn-group pull-right m-1"></div>
