@@ -1,0 +1,35 @@
+﻿@page
+@model Mission09_vim12.Pages.BuyModel
+@{
+}
+<h2>Your Cart</h2>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-info">
+        <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Cost</th>
+            <th>Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var i in Model.cart.Items) { 
+            <tr>
+                <td>@i.Book.Title</td>
+                <td>@i.Quantity</td>
+                <td>@i.Book.Price</td>
+                <td>@(i.Quantity * i.Book.Price)</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot class="table-info">
+        <tr>
+            <td colspan="3">Total:</td>
+            <td>@Model.cart.CalculateTotal().ToString("c")</td>
+        </tr>
+    </tfoot>
+</table>
+<div>
+    <a class="btn btn-info" href="@Model.ReturnUrl">Continue Shopping</a>
+</div>

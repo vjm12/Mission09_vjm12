@@ -31,6 +31,13 @@ namespace Mission09_vim12
                 options.UseSqlite(Configuration["ConnectionStrings:BookDBConnection"]);
             });
             services.AddScoped<IBookstoreRepository, EFBookstoreRepository>();
+
+            //enable the use of razor pages so can add cart
+            services.AddRazorPages();
+
+            //set up session to save data between pages
+            services.AddDistributedMemoryCache();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,11 +50,24 @@ namespace Mission09_vim12
             //Corresponds to wwwroot folder
             app.UseStaticFiles();
 
-            app.UseRouting();
+            app.UseSession();
 
+            app.UseRouting();
+            //Make URLs/slugs neater
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute("categorypage","{bookCategory}/Page{pageNum}",new { Controller = "Home", action = "Index" });
+                endpoints.MapControllerRoute(
+                                    name: "Paging",
+                                    pattern: "Page{pageNum}",
+                                    defaults: new { Controller = "Home", Action = "Index", pageNum=1}
+                                    );
+                endpoints.MapControllerRoute("category", "{bookCategory}", new { Controller = "Home", action="Index",pageNum=1 });
+
+                
                 endpoints.MapDefaultControllerRoute();
+
+                endpoints.MapRazorPages();
             });
         }
     }
