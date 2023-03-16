@@ -13,9 +13,10 @@ namespace Mission09_vim12.Pages
     {
         //build instance of database
         private IBookstoreRepository repo { get; set; }
-        public BuyModel(IBookstoreRepository temp)
+        public BuyModel(IBookstoreRepository temp,Cart c)
         {
             repo = temp;
+            cart = c;
         }
         public Cart cart { get; set; }
         //get the url so the user can return to the page they were on before the cart
@@ -23,19 +24,21 @@ namespace Mission09_vim12.Pages
         public void OnGet(string returnUrl)
         {
             ReturnUrl = returnUrl ?? "/";
-            cart = HttpContext.Session.GetJson<Cart>("cart") ?? new Cart();
         }
         public IActionResult OnPost(int bookId, string returnUrl)
         {
             Book b = repo.Books.FirstOrDefault(x => x.BookId == bookId);
+            
             //initialize cart
-            cart = HttpContext.Session.GetJson<Cart>("cart") ?? new Cart();
             cart.AddItem(b, 1);
 
-            //Set information from cart using the session
-            HttpContext.Session.SetJson("cart", cart);
-
             return RedirectToPage(new { ReturnUrl = returnUrl });
+        }
+        public IActionResult OnPostRemove(int bookId, string returnUrl)
+        {
+            cart.RemoveItem(cart.Items.First(x => x.Book.BookId == bookId).Book);
+
+            return RedirectToPage ( new {ReturnUrl = returnUrl});
         }
     }
 }

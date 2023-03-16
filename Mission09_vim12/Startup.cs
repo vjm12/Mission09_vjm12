@@ -31,6 +31,7 @@ namespace Mission09_vim12
                 options.UseSqlite(Configuration["ConnectionStrings:BookDBConnection"]);
             });
             services.AddScoped<IBookstoreRepository, EFBookstoreRepository>();
+            services.AddScoped<IPurchaseRepository, EFPurchaseRepository>();
 
             //enable the use of razor pages so can add cart
             services.AddRazorPages();
@@ -38,6 +39,10 @@ namespace Mission09_vim12
             //set up session to save data between pages
             services.AddDistributedMemoryCache();
             services.AddSession();
+
+            //add service for child class that inherited from Cart
+            services.AddScoped<Cart>(x => SessionCart.GetCart(x));
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

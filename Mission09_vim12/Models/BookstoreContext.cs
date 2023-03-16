@@ -20,6 +20,7 @@ namespace Mission09_vim12.Models
         }
 
         public DbSet<Book> Books { get; set; }
-
+        //Get second table for database
+        public DbSet<Purchase> Purchases { get; set; }
             }
 }
